@@ -3,21 +3,29 @@ import Navbar from '../components/Navbar'
 import { server,Context } from '../main';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import Posts from '../components/Posts';
+import Posts from './Addpost';
 const Home = () => {
   const [posts,setPosts]=useState([]);
   const {isAuthanticated, setIsAuthanticated ,user,setUser, loading, setLoading }=useContext(Context);
-  console.log(isAuthanticated);
-  if(isAuthanticated){
-    useEffect(()=>{
-      axios.get(`${server}/posts`)
-      .then((res)=>
-      setPosts(res.data.post))
-      .catch((e)=>{
-        toast.error(e.response.data.message);
-      })
-    },[posts])
-  }
+
+  useEffect(() => {
+    const getPost = async () => {
+      try {
+        const { data } = await axios.get(`${server}/posts`, {
+          withCredentials: true
+        });
+        if (data.success) {
+          setPosts(data.user.posts);
+          console.log(posts);
+        }
+      } catch (e) {
+        toast.error("Can't get the posts");
+      }
+    };
+
+    getPost(posts);
+  }, [isAuthanticated]);
+
   return (
     <div>
       {

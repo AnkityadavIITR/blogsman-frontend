@@ -41,7 +41,10 @@ const Login = () => {
               setUser(data.user);
               toast.success(data.message);
               setLoading(false);
-            }else toast.error(data.message);
+            }else {
+              toast.error(data.message);
+              setLoading(false);
+            }
         }catch(e){
 
           console.log(e.response.data.message);

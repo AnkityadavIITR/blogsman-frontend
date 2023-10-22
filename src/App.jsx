@@ -16,9 +16,7 @@ function App() {
   const {isAuthanticted}=useContext(Context);
   return (
     <Router>
-      {/* {
-        isAuthanticted?<Navbar/>:null
-      } */}
+
       <Navbar/>
       <Routes>
         <Route path="/" element={<Home/>}></Route>
