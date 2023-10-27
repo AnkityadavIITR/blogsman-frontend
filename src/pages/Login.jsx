@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState, useContext } from 'react'
 import {Link , Navigate} from 'react-router-dom';
 
@@ -13,7 +13,22 @@ const Login = () => {
     const [email,setEmail]=useState("");
     const [password,setPassword]=useState("");
 
-    const {isAuthanticated ,setIsAuthanticated,loading,setLoading,user,setUser}=useContext(Context)
+    const {isAuthenticated,setIsAuthenticated,loading,setLoading,user,setUser}=useContext(Context)
+    
+    useEffect(()=>{
+      const auth=JSON.parse(window.localStorage.getItem("authorized"));
+      if(auth?.isAuthenticated){
+        setIsAuthenticated(JSON.parse(auth));
+        console.log(auth);
+        console.log(isAuthenticated);
+      }
+      const data=window.localStorage.getItem("user_data");
+      if(data!==null){
+        setUser(JSON.parse(data));
+        console.log(user);
+      }
+    },[])
+
 
     const handleLogin=async(e)=>{
       e.preventDefault()
@@ -22,9 +37,9 @@ const Login = () => {
         formdata.append("password",password);
 
         console.log("sending the req");
+
         try{
           setLoading(true);
-          console.log(loading);
             const {data}=await axios.post(
                 `${server}/user/login`,
                 formdata,
@@ -35,10 +50,18 @@ const Login = () => {
                     withCredentials:true
                 } 
             )
-            console.log(data);
+            console.log("login respond",data);
             if(data.success){
-              setIsAuthanticated(true);
+              setIsAuthenticated((isAuthenticated) => !isAuthenticated);
+              setIsAuthenticated(true);
+              setUser((prevUser) => {
+                const updatedUser = { ...prevUser, ...data.user };
+                window.localStorage.setItem("user_data", JSON.stringify(updatedUser));
+                return updatedUser;
+              });
+              console.log("login user data",);
               setUser(data.user);
+              window.localStorage.setItem("authorized", JSON.stringify({ isAuthenticated: true }));
               toast.success(data.message);
               setLoading(false);
             }else {
@@ -52,15 +75,15 @@ const Login = () => {
             setLoading(false)
         }
     }
-
-    if(isAuthanticated){
+    if(isAuthenticated){
       return <Navigate to={'/'}/>
     }
   return (
 <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h1 className='text-[#00df9a] text-[24px] text-center font-bold'>Blogman.</h1>
+          <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
         </div>
@@ -109,7 +132,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex w-full justify-center disabled:opacity-50 rounded-md bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center disabled:opacity-50 rounded-md bg-violet-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-fuchsia-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
               </button>

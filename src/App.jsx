@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import UserProfile from "./pages/UserProfile";
 import { Toaster } from 'react-hot-toast'
 import { Context } from './main'
+import Addpost from "./pages/Addpost";
 
 
 
@@ -23,6 +24,7 @@ function App() {
         <Route path='/login' element={<Login/>}></Route>
         <Route path='/register' element={<Register/>}></Route>
         <Route path="/me" element={<UserProfile/>}></Route>
+        <Route path="/addpost" element={<Addpost/>}></Route>
       </Routes>
       <Toaster/>
     </Router>

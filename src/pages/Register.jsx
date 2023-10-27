@@ -35,7 +35,7 @@ const Register = () => {
         }
       )
       console.log(data);
-      if(data.success){
+      if(data.success=="true"){
         setIsAuthanticated(true);
         toast.success(data.message);
         setLoading(false);
@@ -55,12 +55,13 @@ const Register = () => {
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
 
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h1 className='text-[#00df9a] text-[20px] font-bold text-center'>Blogman.</h1>
+          <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Register here !
           </h2>
         </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleRegister} method="POST" >
             <div>
               <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
