@@ -25,7 +25,7 @@ const Appwraper=()=>{
         localStorage.clear();
       }, 60 * 60 * 1000);
     }
-    console.log("user",user);
+    // console.log("user",user);
     const userdata=JSON.parse(window.localStorage.getItem("user_data"));
     if(userdata && userdata?.photo && userdata?.photo?.url){
        setUser(userdata);

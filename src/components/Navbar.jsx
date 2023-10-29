@@ -5,11 +5,17 @@ import { useState, useContext } from 'react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import Loader from './Loader'
+import { MenuOutlined, CloseOutlined } from '@ant-design/icons'
 
 
 const Navbar = () => {
     const {isAuthenticated,setIsAuthenticated,loading,setLoading}=useContext(Context);
     const [click,setclick]=useState(false);
+    const [nav,setNav]=useState(false);
+
+    const navClick=()=>{
+        setNav(!nav);
+    }
     // useEffect(()=>{
     // console.log("NAV",isAuthenticated);
     // const data=JSON.parse(window.localStorage.getItem("authorized"));
@@ -48,9 +54,10 @@ const Navbar = () => {
     
 
   return (
-    <div className='flex mx-auto px-8 pt-3 pb-2 text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 items-center justify-between'>
+    <div className='h-[70px] text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 items-center z-10'>
+      <div className='flex px-8 justify-between items-center w-full h-full'>
         <Link to={"/"} className='flex  text-[#00df9a] text-[25px] font-bold border-2 border-[#00df9a] rounded-md p-1' > Blogman. </Link>
-        <div className='flex'>
+        <div className='hidden md:flex'>
             <Link to={'/'} className='px-5 text-lg'>Home</Link>
             {
                 isAuthenticated?(
@@ -65,6 +72,29 @@ const Navbar = () => {
                 ):(<Link to='/login' className='border-2 rounded-[10px]  px-5 text-lg'>SignIn</Link>)
             }
             
+        </div>
+        <div className=' md:hidden' onClick={navClick}>
+            {
+                !nav ? (<MenuOutlined/>):<CloseOutlined/>
+            }
+            
+        </div>
+    </div>
+        <div className={!nav ?'hidden':'absolute px-8 pb-2 w-full bg-gradient-to-r from-violet-500 to-fuchsia-500'} >
+            <Link to={'/'} className='block mt-3 text-md border-b-1 border-white text-center'>Home</Link>
+            {
+                isAuthenticated?(
+                 <Link to={'/me'} className='block mt-3 text-md border-b-2 '>Profile</Link>
+                ):null
+            }
+            {
+                isAuthenticated?(
+                    <button type="submit" onClick={handleLogout} disabled={loading} className='block'>  
+                        {loading?<Loader className='text-white text-md border-b-2 mt-3 border-white border-2 rounded-md p-2 text-center'/>:(<p>Logout</p>)}
+                    </button>
+                ):(<Link to='/login' className='block border-b-2  text-md mt-3 border-white border-2 rounded-md p-2 text-center'>SignIn</Link>)
+            }
+
         </div>
 
     </div>

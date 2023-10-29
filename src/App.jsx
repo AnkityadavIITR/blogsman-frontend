@@ -9,12 +9,13 @@ import UserProfile from "./pages/UserProfile";
 import { Toaster } from 'react-hot-toast'
 import { Context } from './main'
 import Addpost from "./pages/Addpost";
+import Posts from "./components/Posts";
 
 
 
 function App() {
 
-  const {isAuthanticted}=useContext(Context);
+  const {isAuthenticated}=useContext(Context);
   return (
     <Router>
 
@@ -25,6 +26,7 @@ function App() {
         <Route path='/register' element={<Register/>}></Route>
         <Route path="/me" element={<UserProfile/>}></Route>
         <Route path="/addpost" element={<Addpost/>}></Route>
+        <Route path="/:id" element={<Posts/>}></Route>
       </Routes>
       <Toaster/>
     </Router>

@@ -2,7 +2,7 @@ import React from 'react'
 import { Context } from '../main'
 import { useContext } from 'react'
 
-const Posts = ({ key,title,author,image, content,date }) => {
+const Posts = ({ key,title,author,image,postImg, content,date }) => {
   const {user}=useContext(Context);
   return (
     <>
@@ -22,12 +22,15 @@ const Posts = ({ key,title,author,image, content,date }) => {
             <h1 className='text-lg my-auto'>{author}</h1>
 
           </section>
+            {
+              postImg?(<img src={postImg}  width ='250px' className=''></img>):null
+            }
             <h1 className='text-2xl font-bold'>{title}</h1>
             <p className='text-md'>{content}</p>
             <p className='text-sm'>{date}</p>
 
             <section className='border-t-2'>
-              
+
             </section>
         </div>
     
