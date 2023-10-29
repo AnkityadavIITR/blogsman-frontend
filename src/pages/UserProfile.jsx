@@ -60,7 +60,7 @@ const UserProfile = () => {
   return (
     <>
      {isAuthenticated ? (
-        <div className='max-w-[800px] sm:flex mx-auto justify-between border-2 rounded-[10px] p-6 mt-5'>
+        <div className='max-w-[700px] sm:flex mx-auto justify-between border-2 rounded-[10px] p-6 mt-5'>
           {user? (
             <>
             <div className='flex '>

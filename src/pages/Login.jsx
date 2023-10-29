@@ -6,6 +6,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { server } from '../main';
 import { Context } from '../main';
+import Loader from '../components/Loader';
 
 
 const Login = () => {
@@ -134,7 +135,7 @@ const Login = () => {
                 disabled={loading}
                 className="flex w-full justify-center disabled:opacity-50 rounded-md bg-violet-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-fuchsia-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
+                 {loading ?<Loader/>:(<p>Sign in</p>)}
               </button>
             </div>
           </form>

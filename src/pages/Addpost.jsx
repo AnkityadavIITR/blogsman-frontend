@@ -5,6 +5,7 @@ import {StarFilled } from '@ant-design/icons'
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
+import Loader from '../components/Loader';
 
 const Addpost = () => {
   const [title,setTitle]=useState("");
@@ -134,35 +135,18 @@ const Addpost = () => {
                     placeholder="Type your text here..."
                    className="block w-full h-[200px] resize-none p-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                {/* <input
-                  id="content"
-                  name="content"
-                  type="text"
-                  value={content}
-                  onChange={handleInputChangeContent}
-                  
-                  required
-                  className="block w-full p-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                /> */}
+
               </div>
             </div>
 
-            {/* <div>
-              <button
-                onClick={Aicall}
-                // disabled={loading}
-                className="flex w-full justify-center disabled:opacity-50 rounded-md bg-gradient-to-r from-violet-500 to-fuchsia-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                See AI suggestion <StarFilled/>
-              </button>
-            </div> */}
+
             <div>
               <button
                 type="submit"
                 disabled={loading}
                 className="flex w-full justify-center disabled:opacity-50 rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Add post
+                 {loading?<Loader/>:(<p>Add new post</p>)}
               </button>
             </div>
           </form>
