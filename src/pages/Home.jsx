@@ -66,7 +66,7 @@ const Home = () => {
       ):(
       <>
       <Hero/>
-      <Card/>
+      {/* <Card/> */}
       </>
       )
     }
