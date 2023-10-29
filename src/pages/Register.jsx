@@ -4,6 +4,7 @@ import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { server, Context } from '../main';
+import Loader from '../components/Loader';
 
 const Register = () => {
   const [name,setName]=useState("");
@@ -140,7 +141,7 @@ const Register = () => {
                 disabled={loading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Register
+                {loading?<Loader/> :<p>Register</p>}
               </button>
             </div>
           </form>
