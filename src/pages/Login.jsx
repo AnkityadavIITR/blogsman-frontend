@@ -19,7 +19,7 @@ const Login = () => {
     useEffect(()=>{
       const auth=JSON.parse(window.localStorage.getItem("authorized"));
       if(auth?.isAuthenticated){
-        setIsAuthenticated(JSON.parse(auth));
+        setIsAuthenticated(auth);
         console.log(auth);
         console.log(isAuthenticated);
       }
@@ -63,6 +63,11 @@ const Login = () => {
               console.log("login user data",);
               setUser(data.user);
               window.localStorage.setItem("authorized", JSON.stringify({ isAuthenticated: true }));
+              const dataToStore = {
+                timestamp: new Date().getTime(),
+              };
+              localStorage.setItem('your_key', JSON.stringify(dataToStore));
+              
               toast.success(data.message);
               setLoading(false);
             }else {

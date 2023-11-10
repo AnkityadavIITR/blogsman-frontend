@@ -5,6 +5,7 @@ import './index.css'
 import 'primeicons/primeicons.css';
         
 import { createContext,useState } from 'react'
+import { Navigate } from 'react-router-dom';
 
 export const server='https://blogsman-nodejsapp.onrender.com'
 
@@ -24,14 +25,30 @@ const Appwraper=()=>{
         setIsAuthenticated(false);
         localStorage.clear();
       }, 60 * 60 * 1000);
+
+      const dataFromStorage = JSON.parse(localStorage.getItem('your_key'));
+      if (dataFromStorage) {
+           const currentTime = new Date().getTime();
+
+           const timeElapsed = currentTime - dataFromStorage.timestamp;
+          if (timeElapsed > 60 * 60 * 1000) {
+            // More than 1 hour has passed, remove the data from local storage
+            localStorage.removeItem('your_key');
+            localStorage.clear();
+          } 
+        }
     }
-    // console.log("user",user);
     const userdata=JSON.parse(window.localStorage.getItem("user_data"));
     if(userdata && userdata?.photo && userdata?.photo?.url){
        setUser(userdata);
     }
 
   },[isAuthenticated])
+
+  
+
+
+  
   return(
     <Context.Provider value={{isAuthenticated,setIsAuthenticated,loading,setLoading,user,setUser,posts,setPosts}}>
       <App/>

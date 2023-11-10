@@ -55,7 +55,7 @@ const Navbar = () => {
 
   return (
     <div className='h-[70px] text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 items-center z-10'>
-      <div className='flex px-8 justify-between items-center w-full h-full'>
+      <div className='flex px-4 sm:px-8 justify-between items-center w-full h-full'>
         <Link to={"/"} className='flex  text-[#00df9a] text-[25px] font-bold border-2 border-[#00df9a] rounded-md p-1' > Blogman. </Link>
         <div className='hidden md:flex'>
             <Link to={'/'} className='px-5 text-lg'>Home</Link>
@@ -81,16 +81,17 @@ const Navbar = () => {
         </div>
     </div>
         <div className={!nav ?'hidden':'absolute px-8 pb-2 w-full bg-gradient-to-r from-violet-500 to-fuchsia-500'} >
-            <Link to={'/'} className='block mt-3 text-md border-b-1 border-white text-center'>Home</Link>
+            <Link to={'/'} className='block mt-3 text-md border-b-2 border-white text-center'>Home</Link>
             {
                 isAuthenticated?(
-                 <Link to={'/me'} className='block mt-3 text-md border-b-2 '>Profile</Link>
+                 <Link to={'/me'} className='block mt-3 text-md border-b-2 border-white text-center'>Profile</Link>
                 ):null
             }
             {
                 isAuthenticated?(
-                    <button type="submit" onClick={handleLogout} disabled={loading} className='block'>  
-                        {loading?<Loader className='text-white text-md border-b-2 mt-3 border-white border-2 rounded-md p-2 text-center'/>:(<p>Logout</p>)}
+                    <button type="submit" onClick={handleLogout} disabled={loading} className=''>  
+                        {loading?<Loader className='block text-white text-md  mt-3 border-white border-2 rounded-md p-2 text-center'/>:
+                        (<p className='block border-white text-md border-2 rounded-md p-2 text-center '>Logout</p>)}
                     </button>
                 ):(<Link to='/login' className='block border-b-2  text-md mt-3 border-white border-2 rounded-md p-2 text-center'>SignIn</Link>)
             }
