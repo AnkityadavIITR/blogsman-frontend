@@ -11,6 +11,7 @@ import { Context } from './main'
 import Addpost from "./pages/Addpost";
 import Profile from "./pages/Profile";
 import Post from "./pages/Post";
+import Footer from "./components/Footer";
 
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/post/:id" element={<Post/>}></Route>
         <Route path="/user/:id" element={<Profile/>}></Route>
       </Routes>
+      <Footer/>
       <Toaster/>
     </Router>
   )

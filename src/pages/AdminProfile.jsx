@@ -8,6 +8,7 @@ import { MailFilled } from '@ant-design/icons'
 import Loader from '../components/Loader'
 import { Navigate, Link } from 'react-router-dom'
 import Card from '../components/Postcard'
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 
@@ -15,21 +16,21 @@ const UserProfile = () => {
   const {isAuthenticated,setIsAuthenticated,loading,setLoading,user,setUser}=useContext(Context);
   const[posts,setPosts]=useState([]);
   const [dataFetched, setDataFetched] = useState(false);
-  
+  const [togglemenu,setTogglemenu]=useState(false);
 
+  const handletoggle=()=>{
+    console.log('Toggle menu clicked');
+    setTogglemenu(!togglemenu); 
+   }
+  
+  console.log(togglemenu);
   useEffect(()=>{
     const data=JSON.parse(window.localStorage.getItem("authorized"));
-    console.log("user is",data);
+    // console.log("user is",data);
     if(data?.isAuthenticated){
       setIsAuthenticated(data.isAuthenticated);
-
-      // console.log("is Adminprofile",isAuthenticated);
-      // setTimeout(() => {
-      //   setIsAuthenticated(false);
-      //   localStorage.clear()
-      // }, 60 * 60 * 1000);
     }else{
-      return <Navigate to={"/"}/>
+      <Navigate to={"/"}/>
     }
   },[isAuthenticated])
   
@@ -39,7 +40,6 @@ const UserProfile = () => {
         const { data } = await axios.get(`${server}/user/me`, {
           withCredentials: true
         });
-        // console.log("data",data);
         if (data.success) {
           setPosts(data.user.posts);
           window.localStorage.setItem("admin_posts",JSON.stringify(data.user.posts));
@@ -55,23 +55,26 @@ const UserProfile = () => {
 
     if (isAuthenticated) {
       const data = JSON.parse(window.localStorage.getItem("admin_posts"));
-      // console.log(data);
       // console.log("datafetch",dataFetched);
-      if (data && !dataFetched) { // Check if data has been fetched from local storage
+      if (data && !dataFetched) { 
         console.log("fetch from local-storage");
         setPosts(data);
-        setDataFetched(true); // Update the dataFetched state
+        setDataFetched(true); 
+        // Update the dataFetched state
       } else if(!data && !dataFetched){
         getPost();
         console.log("called again");
       }
     }
   }, [isAuthenticated, dataFetched]);
+  
+
 
 
   return (
     <>
-     {isAuthenticated ? (
+     {
+     isAuthenticated ? (
         <div className='max-w-[700px] sm:flex mx-auto justify-between border-2 rounded-[10px] p-6 mt-5'>
           {user? (
             <>
@@ -101,10 +104,7 @@ const UserProfile = () => {
           )}
         </div>
       ) : (
-        {
-          
-        }
-        // <Loader/>
+          <Navigate to={"/"}/>
       )}
 
       
@@ -117,8 +117,25 @@ const UserProfile = () => {
         {
             posts?(
               <div className="flex flex-wrap max-w-screen-xl mx-auto mt-8">
-              {posts.map((post) => (
-                <div key={post._id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 2xl:w-1/4 p-4 ">
+              {posts?.map((post) => (
+                <div key={post._id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 2xl:w-1/4 p-4 border-2  ">
+                  <Link to={"/user/"+user._id}>
+                    <div className='flex justify-between'>
+                      <section className='flex p-1'>
+                       <img src={user.photo.url} alt=""  className='w-[40px] aspect-[1/1] object-cover rounded-full mr-4'/>
+                       <p className='my-auto text-md'>{user.name}</p>
+                      </section>
+                      <div className='my-auto' onClick={handletoggle}>
+                       <MoreVertIcon />
+                      </div>
+
+                      
+                    </div>
+                    <div className={!togglemenu?'hidden':'absolute flex-col border-2 border-slate-500 bg-slate-300 w-auto z-10'}>
+                     <button className='flex p-1 hover:bg-white px-3 w-full'>Edit</button>
+                     <button className='flex p-1 hover:bg-white px-3 w-full'>delete</button>
+                    </div>
+                  </Link>
                   <Link to={"/post/" + post._id} onClick={()=>{
                     window.localStorage.setItem("click_post",JSON.stringify({user:user,post}));
                   }}>
@@ -129,12 +146,6 @@ const UserProfile = () => {
                       date={post.date}
                     />
                   </Link>
-                  <Link to={"/user/"+user._id}>
-                   <section className='flex p-1'>
-                    <img src={user.photo.url} alt=""  className='w-[40px] aspect-[1/1] object-cover rounded-full mr-4'/>
-                    <p className='my-auto text-md'>{user.name}</p>
-                   </section>
-                  </Link>
                 </div>
               ))}
             </div>
@@ -144,9 +155,7 @@ const UserProfile = () => {
 
       </div>
       ):(
-        <div className='max-w-[800px] sm:flex mx-auto justify-between border-2 rounded-[10px] p-6 mt-5'>
-          <p>Login first</p>
-        </div>
+        <Navigate to={"/"}/>
       )
       }
     </>

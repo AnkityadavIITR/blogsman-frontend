@@ -4,9 +4,10 @@ import Loader from '../components/Loader';
 import { useContext } from 'react';
 import { Context } from '../main';
 import { Navigate ,Link} from 'react-router-dom';
+import { LikeFilled, LikeOutlined } from '@ant-design/icons';
 const Post = () => {
 
-  const {isAuthenticated,setIsAuthenticated,loading,setLoading}=useContext(Context); 
+  const {user,isAuthenticated,setIsAuthenticated,loading,setLoading}=useContext(Context); 
   const [postdata,setpostdata]=useState([]);
   const [profile,setprofile]=useState([]);
 
@@ -20,6 +21,9 @@ const Post = () => {
 
   if(!isAuthenticated){
     return <Navigate to={"/"}/>
+  }
+  const handleLike=()=>{
+
   }
   return (
     <>
@@ -57,6 +61,18 @@ const Post = () => {
         </div>
         <h1 className='text-[30px] font-bold'>{postdata.title}</h1>
         <p>{postdata.content}</p>
+      <div className='p-2'>
+        {
+          postdata.likes?.includes(user._id)?(
+          <LikeFilled className='text-[20px] text-red-400 mr-3'/>
+          ):(
+            <button type="submit" onClick={handleLike}>
+              <LikeOutlined className='text-[20px] text-red-400 mr-3' />
+            </button>
+            )
+        }
+      <span className='my-auto text-[20px]'>{postdata.likes?.length}</span>
+       </div>
       </div>
     </div>
   </div>
@@ -65,7 +81,7 @@ const Post = () => {
         if(!isAuthenticated){
           <Navigate to={"/"}/>
         }else return(<Loader/>)
-      },50*1000))
+      },2*1000))
     }
   </>
     

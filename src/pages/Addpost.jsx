@@ -11,6 +11,8 @@ const Addpost = () => {
   const [title,setTitle]=useState("");
   const [content,setContent]=useState("");
   const [text, setText] = useState("");
+  const [file,setFile]=useState();
+
 
   const textareaRef = useRef(null);
 
@@ -35,18 +37,14 @@ const Addpost = () => {
     }
   };
 
-  const Aicall=async(e)=>{
 
-  }
 
   const handlePost=async(e)=>{
-    console.log(user.name);
     e.preventDefault();
-    const formdata={
-      title:title,
-      content:content,
-      author:user.name,
-    }
+    const formdata=new FormData();
+    formdata.append("title",title);
+    formdata.append("content",content)
+    formdata.append("file",file);
 
     try {
       setLoading(true);
@@ -56,7 +54,7 @@ const Addpost = () => {
         formdata,
         {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
           },
           withCredentials: true,
         }
@@ -66,7 +64,7 @@ const Addpost = () => {
       if (response.data && response.data.success) {
         toast.success(response.data.message);
         setLoading(false);
-        <Navigate to={"/"}/>
+        return <Navigate to={"/"}/>
       } else {
         toast.error('An unexpected error occurred.');
         setLoading(false);
@@ -84,6 +82,9 @@ const Addpost = () => {
 
   }
 
+  if(!isAuthenticated){
+    return <Navigate to={"/"}/>
+  }
 
   return (
     <>
@@ -137,6 +138,22 @@ const Addpost = () => {
                 />
 
               </div>
+            </div>
+            <div>
+              <input 
+                type="file"
+                className='block w-full text-md text-slate-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0
+                file:text-sm file:font-semibold
+                file:bg-violet-50 file:text-violet-700
+                hover:file:bg-violet-100'
+                name="file" 
+                id="" 
+                onChange={(e)=>
+                  setFile(e.target.files[0])
+                }
+                />
             </div>
 
 

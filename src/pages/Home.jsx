@@ -3,17 +3,15 @@ import { Link, Navigate } from 'react-router-dom';
 import { server,Context } from '../main';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import Posts from '../components/Posts';
 import { PlusOutlined  } from '@ant-design/icons'
-import Posttry from './Post';
 import Hero from '../components/Hero';
 import Card from '../components/Postcard';
+import { LikeOutlined } from '@ant-design/icons';
+import { LikeFilled } from '@ant-design/icons';
 
 const Home = () => {
-
   const {isAuthenticated,setIsAuthenticated ,user,setUser, loading, setLoading}=useContext(Context);
-  //for all posts
-  const [posts,setPosts]=useState([])
+  const [posts,setPosts]=useState([]);
 
   useEffect(() => {
     console.log("is",isAuthenticated);
@@ -38,6 +36,14 @@ const Home = () => {
     }
   }, [isAuthenticated]);
 
+  const handleLike= async()=>{
+    try{
+      await axios.get(`${server}`)
+    }catch(err){
+
+    }
+  }
+
   return (
     <>
     {
@@ -48,7 +54,13 @@ const Home = () => {
             posts?(
               <div className="flex flex-wrap max-w-screen-xl mx-auto mt-8">
               {posts.map((post) => (
-                <div key={post._id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 2xl:w-1/4 p-4 ">
+                <div key={post._id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/4 p-4 border-2 ">
+                  <Link to={"/user/"+post.user._id}>
+                   <section className='flex p-1'>
+                    <img src={post.user.photo.url} alt=""  className='w-[40px] aspect-[1/1] object-cover rounded-full mr-4'/>
+                    <p className='my-auto text-md'>{post.user.name}</p>
+                   </section>
+                  </Link>
                   <Link to={"/post/" + post._id} onClick={()=>{
                     window.localStorage.setItem("click_post",JSON.stringify({user:post.user,post}));
                   }}>
@@ -56,18 +68,24 @@ const Home = () => {
                       title={post.title}
                       postImg={post?.photo?.url}
                       content={post.content}
-                      author={post.user.name}
                       image={post.user.photo.url}
                       userId={post.user._id}
                       date={post.date}
+                      likecnt={post.likes.length}
                     />
                   </Link>
-                  <Link to={"/user/"+post.user._id}>
-                   <section className='flex p-1'>
-                    <img src={post.user.photo.url} alt=""  className='w-[40px] aspect-[1/1] object-cover rounded-full mr-4'/>
-                    <p className='my-auto text-md'>{post.user.name}</p>
-                   </section>
-                  </Link>
+                  <div className=''>
+                    {
+                      post.likes.includes(user._id)?(
+                          <LikeFilled className='text-[20px] text-red-400 mr-3'/>
+                      ):(
+                        <button type="submit" onClick={handleLike}>
+                          <LikeOutlined className='text-[20px] text-red-400 mr-3' />
+                        </button>
+                      )
+                    }
+                   <span className='my-auto text-[15px]'>{post.likes?.length}</span>
+                   </div>
                 </div>
               ))}
             </div>

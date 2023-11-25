@@ -32,7 +32,6 @@ const Appwraper=()=>{
 
            const timeElapsed = currentTime - dataFromStorage.timestamp;
           if (timeElapsed > 60 * 60 * 1000) {
-            // More than 1 hour has passed, remove the data from local storage
             localStorage.removeItem('your_key');
             localStorage.clear();
           } 
@@ -45,10 +44,6 @@ const Appwraper=()=>{
 
   },[isAuthenticated])
 
-  
-
-
-  
   return(
     <Context.Provider value={{isAuthenticated,setIsAuthenticated,loading,setLoading,user,setUser,posts,setPosts}}>
       <App/>

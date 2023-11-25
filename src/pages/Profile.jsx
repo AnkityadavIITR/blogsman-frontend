@@ -8,6 +8,8 @@ import { MailFilled } from '@ant-design/icons'
 import Loader from '../components/Loader'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import Card from '../components/Postcard'
+import { LikeOutlined } from '@ant-design/icons'
+
 
 
 
@@ -15,6 +17,7 @@ const Profile = () => {
   const {isAuthenticated,setIsAuthenticated,loading,setLoading}=useContext(Context);
   const[userData,setuserData]=useState([]);
   const [dataFetched, setDataFetched] = useState(false);
+
 
 
   useEffect(()=>{
@@ -25,14 +28,19 @@ const Profile = () => {
       setTimeout(() => {
         setIsAuthenticated(false);
         localStorage.clear();
-        return <Navigate to={"/"}/>
       }, 60 * 60 * 1000);
     }
+  },[isAuthenticated])
 
-  },[])
-  
+    if(!isAuthenticated){
+    return <Navigate to={"/"}/>
+  }
   let params=useParams();
-  console.log(isAuthenticated);
+  const user=JSON.parse(window.localStorage.getItem("user_data"));
+  if(user?._id===params.id){
+    console.log("matched");
+    return <Navigate to={"/me"}/>
+  }
   useEffect(() => {
     const getdata = async () => {
       setLoading(true);
@@ -55,6 +63,7 @@ const Profile = () => {
       }
     };
     
+   
     if (isAuthenticated) {
       const data = JSON.parse(window.localStorage.getItem("click_profile"));
       if(data?._id!=params.id){
@@ -70,7 +79,13 @@ const Profile = () => {
         }
       }
     }
+    
   }, [isAuthenticated, dataFetched]);
+
+  // if(!isAuthenticated){
+  //   return <Navigate to={"/"}/>
+  // }
+  
   
 
   return (
@@ -109,22 +124,28 @@ const Profile = () => {
             if(!isAuthenticated){
               <Navigate to={"/"}/>
             }
-          },50*1000)
+          },2*1000)
         
       )}
+
       {isAuthenticated?(
         <div className="flex flex-wrap max-w-screen-xl mx-auto mt-8">
           {
           userData?.posts?.map((post)=>(
-            <div key={post._id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 2xl:w-1/4 p-4 mx-auto ">
+            <div key={post._id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 2xl:w-1/4 p-4 mx-auto border-2">
+                <section className='flex mb-4'>
+                  <img src={userData?.photo.url} alt=""  className='w-[40px] aspect-[1/1] object-cover rounded-full mr-4'/>
+                  <p className='my-auto text-md'>{userData?.name}</p>
+                </section>
+
             <Link to={"/post/"+ post._id} onClick={()=>{
               window.localStorage.setItem("click_post",JSON.stringify({user:userData,post}));
             }}>
               <Card content={post.content}  postImg={post.photo?.url} title={post.title} date={post.date}></Card>
             </Link>
-              <section className='flex p-1'>
-              <img src={userData?.photo.url} alt=""  className='w-[40px] aspect-[1/1] object-cover rounded-full mr-4'/>
-              <p className='my-auto text-md'>{userData?.name}</p>
+              <section className=''>
+              <LikeOutlined className='text-[20px] text-red-400 mr-3'/>
+              <span className='my-auto text-[15px]'>{post.likes.length}</span>
               </section>
             </div>
           ))

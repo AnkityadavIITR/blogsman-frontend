@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { Context, server } from '../main';
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { LikeOutlined } from '@ant-design/icons';
 
-const Card = ({ postImg, date, title, content}) => {
+const Card = ({ postImg, date, title, content,likecnt}) => {
   const shortContent = content.slice(0, 40);
   return (
     <div className="w-full mb-10">
@@ -21,6 +22,7 @@ const Card = ({ postImg, date, title, content}) => {
           {title}
         </h3>
         <p className="text-base text-body-color dark:text-dark-6">{shortContent} ...</p>
+
       </div>
     </div>
   );

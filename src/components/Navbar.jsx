@@ -6,11 +6,15 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import Loader from './Loader'
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons'
+import { CiHome } from "react-icons/ci";
+import { CiUser } from "react-icons/ci";
+import { IoIosLogOut } from "react-icons/io";
+import { TiMessages } from "react-icons/ti";
+
 
 
 const Navbar = () => {
     const {isAuthenticated,setIsAuthenticated,loading,setLoading}=useContext(Context);
-    const [click,setclick]=useState(false);
     const [nav,setNav]=useState(false);
 
     const navClick=()=>{
@@ -58,19 +62,25 @@ const Navbar = () => {
       <div className='flex px-4 sm:px-8 justify-between items-center w-full h-full'>
         <Link to={"/"} className='flex  text-[#00df9a] text-[25px] font-bold border-2 border-[#00df9a] rounded-md p-1' > Blogman. </Link>
         <div className='hidden md:flex'>
-            <Link to={'/'} className='px-5 text-lg'>Home</Link>
+            <Link to={'/'} className='px-3 my-auto text-2xl'><CiHome/></Link>
             {
                 isAuthenticated?(
-                 <Link to={'/me'} className='px-5 text-lg'>Profile</Link>
+                 <Link to={'/me'} className='px-3 text-2xl'><CiUser/></Link>
                 ):null
             }
             {
                 isAuthenticated?(
-                    <button type="submit" onClick={handleLogout} disabled={loading} className='px-5 text-lg border-2 border-white disabled:border-0'>  
-                        {loading?<Loader className='text-white'/>:(<p>Logout</p>)}
+                    <button type="submit" className='px-2'><span className='text-2xl'><TiMessages/></span></button>
+                ):null
+            }
+            {
+                isAuthenticated?(
+                    <button type="submit" onClick={handleLogout} disabled={loading} className='px-2 text-lg'>  
+                        {loading?<Loader className='text-white'/>:(<span className='text-2xl'><IoIosLogOut/></span> )}
                     </button>
                 ):(<Link to='/login' className='border-2 rounded-[10px]  px-5 text-lg'>SignIn</Link>)
             }
+
             
         </div>
         <div className=' md:hidden' onClick={navClick}>
